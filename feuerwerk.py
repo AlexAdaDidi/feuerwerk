@@ -67,7 +67,113 @@ class VectorSprite(pygame.sprite.Sprite):
                 maxy = point.y
         self.image = pygame.Surface((maxx, maxy))
         pygame.draw.circle(self.image, (255,0,0), (2,2), 2)
-        self.image.convert_alpha()  
+        self.image.convert_alpha() 
+        
+class Ufo(VectorSprite):
+  
+    def update(self, seconds):
+        # --- animate ---
+        i = (self.age * 10) % 4 # modulo = rest of division by 3
+        self.image = self.images[int(i)]
+        # --- chance to change move vector ---
+        if random.random() < 0.001:
+            self.move=v.Vec2d(random.randint(-80,80),
+                              random.randint(-80,80))
+        # --- bounce on screen edge ---
+        if self.pos.x < 0:
+            self.pos.x = 0
+            self.move.x *= -1
+        elif self.pos.x > PygView.width:
+            self.pos.x = PygView.width
+            self.move.x *= -1
+        if self.pos.y < 0:
+            self.pos.y = 0
+            self.move.y *= -1
+        elif self.pos.y > PygView.height:
+            self.pos.y = PygView.height
+            self.move.y *= -1
+        VectorSprite.update(self, seconds)
+  
+    def create_image(self):
+        # ------ image0 ------
+        self.image0 = pygame.Surface((100, 100))
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 25), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 75), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 25), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 75), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (75, 25), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (75, 75), 3)
+        pygame.draw.circle(self.image0, (255,255,0), (50, 50), 7)
+        pygame.draw.circle(self.image0, (255,0,0), (30, 50), 7)
+        pygame.draw.circle(self.image0, (0,0,255), (70, 50), 7)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (15, 100), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 75), (35, 100), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 75), (60, 100), 3)
+        pygame.draw.line(self.image0, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 75), (80, 100), 3)
+        self.image0.set_colorkey((0,0,0))
+        self.image0.convert_alpha()
+        # ------ image1 ------
+        self.image1 = pygame.Surface((100, 100))
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 25), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 75), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 25), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 75), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (75, 25), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (75, 75), 3)
+        pygame.draw.circle(self.image1, (0,0,255), (50, 50), 7)
+        pygame.draw.circle(self.image1, (255,255,0), (30, 50), 7)
+        pygame.draw.circle(self.image1, (255,0,0), (70, 50), 7)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (15, 100), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 75), (35, 100), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 75), (60, 100), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 75), (80, 100), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (15, 15), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 25), (35, 15), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 25), (60, 15), 3)
+        pygame.draw.line(self.image1, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 25), (80, 15), 3)
+        self.image1.set_colorkey((0,0,0))
+        self.image1.convert_alpha()
+        # ------ image2 ------
+        self.image2 = pygame.Surface((100, 100))
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 25), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 75), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 25), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 75), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (75, 25), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (75, 75), 3)
+        pygame.draw.circle(self.image2, (255,0,0), (50, 50), 7)
+        pygame.draw.circle(self.image2, (0,0,255), (30, 50), 7)
+        pygame.draw.circle(self.image2, (255,255,0), (70, 50), 7)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (15, 100), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 75), (35, 100), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 75), (60, 100), 3)
+        pygame.draw.line(self.image2, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 75), (80, 100), 3)
+        self.image2.set_colorkey((0,0,0))
+        self.image2.convert_alpha()
+        # --- image3 ---
+        self.image3 = pygame.Surface((100, 100))
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 25), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (15, 50), (25, 75), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 25), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (85, 50), (75, 75), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (75, 25), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (75, 75), 3)
+        pygame.draw.circle(self.image3, (0,0,255), (50, 50), 7)
+        pygame.draw.circle(self.image3, (255,255,0), (30, 50), 7)
+        pygame.draw.circle(self.image3, (255,0,0), (70, 50), 7)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 75), (15, 100), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 75), (35, 100), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 75), (60, 100), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 75), (80, 100), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (25, 25), (15, 15), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (40, 25), (35, 15), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (55, 25), (60, 15), 3)
+        pygame.draw.line(self.image3, (random.randint(0,255), random.randint(0,255), random.randint(0,255)), (70, 25), (80, 15), 3)
+        self.image3.set_colorkey((0,0,0))
+        self.image3.convert_alpha()
+        # --------------
+        self.images = [self.image0, self.image1, self.image2, self.image3]
+        self.image = self.images[0]        
         
 class Fragment(VectorSprite):
     def __init__(self, pos=v.Vec2d(100,100), move=None, color=None, gravity=None, lifetime=None, clone=False, radius=2):
