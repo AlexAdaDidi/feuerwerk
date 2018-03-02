@@ -93,10 +93,10 @@ class VectorSprite(pygame.sprite.Sprite):
         VectorSprite.number += 1 
         VectorSprite.numbers[self.number] = self 
         # get unlimited named arguments and turn them into attributes
-        self.upkey = None
-        self.downkey = None
-        self.rightkey = None
-        self.leftkey = None
+        #self.upkey = None
+        #self.downkey = None
+        #self.rightkey = None
+        #self.leftkey = None
         
 
         # --- default values for missing keywords ----
@@ -476,7 +476,8 @@ class PygView(object):
 
     def run(self):
         """The mainloop"""
-        
+        self.score1 = 0
+        self.score2 = 0
         running = True
         while running:
             for event in pygame.event.get():
@@ -658,6 +659,12 @@ class PygView(object):
             # write text below sprites
             write(self.screen, "FPS: {:6.3}  PLAYTIME: {:6.3} SECONDS".format(
                            self.clock.get_fps(), self.playtime))
+            
+            # left score
+            write(self.screen, "{}".format(self.score1), x = PygView.width // 100 * 25, y=PygView.height//2, color=self.ball1.color, center=True, fontsize = 100)
+            # right score
+            write(self.screen, "{}".format(self.score2), x = PygView.width // 100 * 75, y=PygView.height//2, color=self.ball2.color, center=True, fontsize = 100)
+            
             # you can use: pygame.sprite.collide_rect, pygame.sprite.collide_circle, pygame.sprite.collide_mask
             # the False means the colliding sprite is not killed
             # ---------- collision detection between ball and bullet sprites ---------
@@ -666,6 +673,19 @@ class PygView(object):
             #   for bullet in crashgroup:
             #       elastic_collision(ball, bullet) # change dx and dy of both sprites
             #       ball.hitpoints -= bullet.damage
+            # --------- collision detection between ball3 and goalgroup
+            crash = pygame.sprite.spritecollideany(self.ball3, self.goalgroup)            
+            if crash is not None:
+                if crash.side == "left":
+                    self.score2 += 1
+                elif crash.side == "right":
+                    self.score1 += 1
+                for b in [self.ball1, self.ball2, self.ball3]:
+                    b.move = v.Vec2d(0,0)
+                self.ball1.pos = v.Vec2d(PygView.width//2 - 100, PygView.height//2)
+                self.ball2.pos = v.Vec2d(PygView.width//2 + 100, PygView.height//2)
+                self.ball3.pos = v.Vec2d(PygView.width//2, PygView.height//2)
+            
             # --------- collision detection between ball and other balls
             for ball in self.ballgroup:
                 crashgroup = pygame.sprite.spritecollide(ball, self.ballgroup, False, pygame.sprite.collide_circle)
@@ -673,11 +693,11 @@ class PygView(object):
                     if ball.number > otherball.number:     # make sure no self-collision or calculating collision twice
                         elastic_collision(ball, otherball) # change dx and dy of both sprites
             # ---------- collision detection between bullet and other bullets
-            for bullet in self.bulletgroup:
-                crashgroup = pygame.sprite.spritecollide(bullet, self.bulletgroup, False, pygame.sprite.collide_circle)
-                for otherbullet in crashgroup:
-                    if bullet.number > otherbullet.number:
-                         elastic_collision(bullet, otherball) # change dx and dy of both sprites
+            #for bullet in self.bulletgroup:
+            #    crashgroup = pygame.sprite.spritecollide(bullet, self.bulletgroup, False, pygame.sprite.collide_circle)
+            #    for otherbullet in crashgroup:
+            #        if bullet.number > otherbullet.number:
+            #             elastic_collision(bullet, otherball) # change dx and dy of both sprites
             # -------- remove dead -----
             #for sprite in self.ballgroup:
             #    if sprite.hitpoints < 1:
